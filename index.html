@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aldi £750 Grocery‑Voucher Survey Entry</title>
+  <style>
+    :root {
+      --primary:#ED702D; /* Aldi orange */
+      --accent:#0061A8;  /* Aldi blue */
+      --bg:#f5f6f7;
+      --text:#222;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:system-ui,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.4;}
+    .container{max-width:480px;margin:40px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.06);} 
+    h1{font-size:1.5rem;font-weight:600;margin-bottom:12px;text-align:center;color:var(--accent);} 
+    p.lead{margin-bottom:20px;text-align:center;}
+    form label{display:block;font-weight:600;margin-top:16px;margin-bottom:4px;}
+    form input{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:1rem;}
+    button{width:100%;padding:12px 0;margin-top:24px;font-size:1rem;font-weight:600;border:none;border-radius:8px;background:var(--primary);color:#fff;cursor:pointer;transition:background .2s ease;}
+    button:hover{background:#c95b21;}
+    .small{font-size:.78rem;color:#555;margin-top:16px;line-height:1.3;}
+    .tiny{font-size:.72rem;color:#666;margin-top:12px;}
+    #surveySection{display:none;text-align:center;}
+    #surveySection a{display:inline-block;margin-top:24px;padding:14px 26px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;transition:background .2s ease;}
+    #surveySection a:hover{background:#004d82;}
+    /* NEW: Voucher image */
+    .voucher{display:block;margin:16px auto;width:100%;max-width:320px;}
+  </style>
+<link type="text/css" rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <main class="container">
+    <!-- STEP 1: Lead form -->
+    <section id="formSection">
+      <h1>Chance to receive a £750 Aldi Voucher</h1>
+      <p class="lead">Answer a quick survey about your grocery habits. It takes 60&nbsp;seconds.</p>
+      <img src="https://nationalconsumerscenter.co.uk/CampImg/1718/SuperDynamic/genericimg/aldis_750_UK.png" alt="£750 Aldi Voucher" class="voucher">
+
+      <form id="leadForm">
+        <label for="fname">First name</label>
+        <input type="text" id="fname" name="first_name" required>
+
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Continue to Survey</button>
+
+        <p class="small"><strong>Privacy:</strong> Your details are used to contact you about this promotion. View our <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+        <p class="tiny">
+          No purchase necessary. UK&nbsp;18+. Ends&nbsp;31&nbsp;May&nbsp;2025. Chance to receive one (1) £750 Aldi Gift Card. Survey completion does <em>not</em> guarantee reward. Promotion by Glitchy&nbsp;Ltd and is in no way sponsored, endorsed or administered by, or associated with, Aldi or Meta.
+        </p>
+      </form>
+    </section>
+
+    <!-- STEP 2: Survey unlocked -->
+    <section id="surveySection">
+      <h1>Survey Unlocked</h1>
+      <p class="lead">Almost done—tap below to begin your 60‑second Aldi shopper survey.</p>
+      <img src="https://nationalconsumerscenter.co.uk/CampImg/1718/SuperDynamic/genericimg/aldis_750_UK.png" alt="£750 Aldi Voucher" class="voucher">
+      <a href="https://glstrck.com/aff_c?offer_id=974&aff_id=4626" target="_blank" rel="noopener">Start Survey</a>
+      <p class="tiny">If the survey page doesn’t open, <a href="https://glstrck.com/aff_c?offer_id=974&aff_id=4626" target="_blank" rel="noopener">click here</a>.</p>
+    </section>
+  </main>
+
+  <script>
+    /* === Google Sheets integration ===
+       1. Create a new Google Sheet → Extensions → Apps Script.
+       2. Replace the default code with the snippet in the README (see below).
+       3. Deploy → New deployment → Select "Web app" → Execute as: Me, Access: Anyone. Click Deploy.
+       4. Copy the URL ending in "/exec" and paste it into SHEET_ENDPOINT below. */
+
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbza2ZxY2U9TX13-0v1bNkS2-f6vh1VjacFLTtGET5cHGmkSvO4izuyne7mgXf8tdiVjdQ/exec"; // ← replace with your Web App URL
+
+    document.getElementById("leadForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      const payload = {
+        first_name: e.target.first_name.value.trim(),
+        email:      e.target.email.value.trim(),
+        source:     "aldi_lander"
+      };
+      try {
+        await fetch(SHEET_ENDPOINT, {
+          method: "POST",
+          mode:   "no-cors", // Sheets Web App ignores CORS; "no-cors" avoids blocking
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        });
+      } catch(err){
+        console.error("Lead submit error:", err);
+        /* Fail silently – still unlock survey */
+      }
+      document.getElementById("formSection").style.display = "none";
+      document.getElementById("surveySection").style.display = "block";
+    });
+  </script>
+<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>

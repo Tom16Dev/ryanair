@@ -1,0 +1,12 @@
+<style>
+  :root {
+    --primary:#ED702D;  /* Aldi orange */
+    --accent:#0061A8;   /* Aldi blue */
+    --bg:#f5f6f7;
+    --text:#222;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:system-ui,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.4;}
+  .container{max-width:480px;margin:40px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.06);}
+  /* …the rest of the rules follow… */
+</style>
